@@ -1,6 +1,7 @@
 import oracledb
 import sys
 import os
+import re
 from glob import glob
 from contextlib import contextmanager
 
@@ -62,7 +63,12 @@ if __name__ == "__main__":
                     if "select" not in statement.lower():
                         continue
 
-                    rows = cursor.fetchall()
+                    # Fetch and print rows
+                    try:
+                        rows = cursor.fetchall()
+                    except:
+                        print("Statement didn't return anything. Skipping...")
+                        continue
                     if rows:
                         # Print column headers
                         columns = [desc[0] for desc in cursor.description]
